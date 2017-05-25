@@ -1,0 +1,13 @@
+#! /bin/bash
+###
+# k-based virtual machines
+# NABUCODONOSOR SERVER
+# SCESI RULES!
+# Part of the sassers system S-SYSTEM
+###
+
+echo "Setting up dozer ..."
+
+kvm -name dozer -net nic,macaddr=4e:ec:27:d2:16:b8 -net tap,ifname=tap4,script=no,downscript=no -net nic,vlan=1,macaddr=1a:bf:bc:ff:fb:85 -net tap,vlan=1,ifname=tap5,script=no,downscript=no -hda /dev/vg-raid1/dozer -hdb /dev/vg-raid1/dozer-data -hdc /dev/vg-normal/repoman -smp 2 -m 1G -nographic -boot c &
+
+echo done

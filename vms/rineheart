@@ -1,0 +1,13 @@
+#! /bin/bash
+###
+# k-based virtual machines
+# NABUCODONOSOR SERVER
+# SCESI RULES!
+# Part of the sassers system S-SYSTEM
+###
+
+echo "Setting up rineheart ..."
+
+kvm -name rineheart -net nic,macaddr=16:29:76:71:f4:e7 -net tap,ifname=tap6,script=no,downscript=no -net nic,vlan=1,macaddr=ca:6d:e1:f0:32:21 -net tap,vlan=1,ifname=tap7,script=no,downscript=no -hda /dev/vg-raid1/rhineheart -hdb /dev/vg-raid1/rhineheart-db -m 512 -nographic -boot c &
+
+echo done

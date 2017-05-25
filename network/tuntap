@@ -1,0 +1,68 @@
+#! /bin/bash
+
+###
+# tun/tap direct bridging networking
+# NABUCODONOSOR SERVER
+# SCESI RULES!
+# Part of the sassers system S-SYSTEM
+###
+
+NUM_OF_DEVICES=7
+
+case $1 in
+start)
+     echo "Configurando interfaces virtuales TUN TAP"
+     modprobe tun > /dev/null 
+     for(( a=0; a<=$NUM_OF_DEVICES; a++ ))
+     do
+       tunctl -b -u root -t tap$a >/dev/null
+       if (( ((b=a%2)) == 0 ))
+       then
+          brctl addif br0 tap$a
+          ifconfig br0 hw ether f4:6d:04:53:64:26
+       else
+          brctl addif br1 tap$a
+          ifconfig br1 hw ether f4:6d:04:53:79:71
+       fi
+     done
+     
+     ifconfig tap0 hw ether 86:4f:06:d4:be:ad
+     ifconfig tap1 hw ether 32:11:12:31:25:4b
+     ifconfig tap2 hw ether 6e:a6:84:c5:ef:0d
+     ifconfig tap3 hw ether 7e:18:1e:d0:38:45
+     ifconfig tap4 hw ether 96:a5:02:52:af:bf
+     ifconfig tap5 hw ether 6e:cc:f5:62:11:87
+     ifconfig tap6 hw ether aa:96:7b:c3:5b:91
+     ifconfig tap7 hw ether 22:13:ab:6b:f0:11
+     
+     for(( a=0; a<=$NUM_OF_DEVICES; a++ ))
+     do
+       ifconfig tap$a 0.0.0.0 promisc up
+       echo tap$a ready!
+     done
+     echo done     
+     ;;
+
+stop)
+    echo "STOPING TUN TAP DEVICES"
+    for(( a=0; a<=$NUM_OF_DEVICES; a++ ))
+    do
+      ifconfig tap$a down
+      if (( ((b=a%2)) == 0))
+      then
+          brctl delif br0 tap$a
+          tunctl -d tap$a
+      else      
+          brctl delif br1 tap$a
+          tunctl -d tap$a
+      fi
+    done
+    modprobe -r tun
+    echo done
+    ;;
+
+*) 
+  echo "Usage: {start|stop}"
+  ;;
+
+esac

@@ -1,0 +1,13 @@
+#! /bin/bash
+###
+# k-based virtual machines
+# NABUCODONOSOR SERVER
+# SCESI RULES!
+# Part of the sassers system S-SYSTEM
+###
+
+echo "Setting up link ..."
+
+kvm -name link -net nic,macaddr=be:51:7a:05:0f:a5 -net tap,ifname=tap0,script=no,downscript=no -net nic,vlan=1,macaddr=16:e7:75:1b:bd:b1 -net tap,vlan=1,ifname=tap1,script=no,downscript=no -hda /dev/vg-raid1/link -m 512 -nographic -boot c &
+echo done
+
